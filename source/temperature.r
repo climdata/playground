@@ -10,7 +10,17 @@ tps <- merge(t1,p0, by=c("year","month"))
 tps <- merge(tps,prec1, by=c("year","month"))
 tps$t1 <- sin((tps$month-1)*pi/6)
 tps$t2 <- cos((tps$month-1)*pi/6)
+tps$t3 <- sin((tps$month-1)*pi/3)
+tps$t4 <- cos((tps$month-1)*pi/3)
+tps$t5 <- sin((tps$month-1)*pi/2)
+tps$t6 <- cos((tps$month-1)*pi/2)
 tps <- tps[order(tps$ts),]
+
+mx5 <- lm(Deutschland ~ (pi+ti)*(t1+t2+t3+t4+t5+t6), tps)
+summary(mx5)
+pr5 <- predict(mx5, newdata=tps, se.fit=TRUE) 
+tps$spi5 <- pr5$fit
+tps$se5 <- pr5$se
 
 mx2 <- lm(Deutschland ~ pi+ti+t1+t2, tps)
 summary(mx2)
@@ -33,6 +43,7 @@ tps$se4 <- pr4$se
 p <- ggplot(data = tps, aes(x = Deutschland, y = spi2)) +
    geom_point(aes(y = spi4), color="#00AA00", alpha=0.2, size=2) +
    geom_point(aes(y = spi3), color="#0000BB", alpha=0.3, size=2) +
-   geom_point(aes(y = spi2), color="#FF0000", alpha=0.4, size=2)
+   geom_point(aes(y = spi2), color="#FF0000", alpha=0.4, size=2) +
+  geom_point(aes(y = spi5), color="#00FF00", alpha=0.5, size=2)
 p
 
