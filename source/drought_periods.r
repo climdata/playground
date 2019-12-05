@@ -188,7 +188,7 @@ mp + geom_raster(aes(fill=-hhi))+
   theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24))+
-  scale_x_continuous(limits=c(1520,1560)) +  
+  scale_x_continuous(limits=c(1580,1620)) +  
   scale_fill_gradientn(colors=droughtColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
