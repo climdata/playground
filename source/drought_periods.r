@@ -26,7 +26,7 @@ hhi_all <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/mast
 filterYears <- 1/6
 hhi_all$hhi.f <- do_fft(hhi_all$hhi,filterYears)
 
-hhiLimit <- -1.2
+hhiLimit <- -0.7
 
 hhi_drought <- subset(hhi_all, hhi_all$hhi<hhiLimit)
 hhi_drought <- hhi_drought[order(hhi_drought$ts),]
@@ -167,3 +167,39 @@ ggplot(data=hhi_periods, aes(y=-hhi_avg, x=duration, size=-hhi.fmax, color=year_
   geom_text(alpha=0.8, check_overlap = FALSE)+
   scale_size(range = c(5, 12), name="HHI max")+
   scale_color_gradientn(colors=hhiColors)
+
+
+droughtColors = brewer.pal(n = 5, name = "YlOrRd")
+
+mp <- ggplot(hhi_drought, aes(year_max, round(12*(ts-ts_max))))
+mp + geom_raster(aes(fill=-hhi))+
+  #theme_classic(base_size=80) +
+  theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(-9,-6,-3,0,3,6,9), limits=c(-12,12))+
+  scale_x_continuous(limits=c(1520,1560)) +  
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+
+mp <- ggplot(hhi_drought, aes(year_max, month_max+round(12*(ts-ts_max))))
+mp + geom_raster(aes(fill=-hhi))+
+  #theme_classic(base_size=80) +
+  theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24))+
+  scale_x_continuous(limits=c(1520,1560)) +  
+  scale_fill_gradientn(colors=droughtColors) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+
+mp <- ggplot(hhi_drought, aes(year, month))
+mp + geom_raster(aes(fill=-hhi))+
+  #theme_classic(base_size=80) +
+  theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  scale_y_continuous(breaks=c(3,6,9,12), limits=c(1,12))+
+  scale_x_continuous(limits=c(1520,1560)) +  
+  scale_fill_gradientn(colors=droughtColors) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
