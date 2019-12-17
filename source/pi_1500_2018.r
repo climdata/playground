@@ -11,7 +11,7 @@ par(mfrow=c(1,1))
 setwd("C:/Code/climData/glaser2010")
 
 
-p0 <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/p_1500_1995.csv", sep=",", na = "NA")
+p0 <- read.csv("https://raw.githubusercontent.com/climdata/glaser2019/master/csv/p_1500_2xxx.csv", sep=",", na = "NA")
 spifull <- read.csv("https://raw.githubusercontent.com/climdata/dwdSPI/master/csv/spi_de.csv", sep=",", na = "NA")
 
 p1 <- data.frame()

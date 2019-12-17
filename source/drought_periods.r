@@ -23,10 +23,10 @@ do_fft <- function(pic, filterYears) {
 
 hhi_all <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/csv/hhi_1500_2xxx.csv", sep=",")
 
-filterYears <- 1/6
+filterYears <- 1/7
 hhi_all$hhi.f <- do_fft(hhi_all$hhi,filterYears)
 
-hhiLimit <- -0.7
+hhiLimit <- -0.5
 
 hhi_drought <- subset(hhi_all, hhi_all$hhi<hhiLimit)
 hhi_drought <- hhi_drought[order(hhi_drought$ts),]
@@ -50,7 +50,8 @@ for(i in 2:nrow(hhi_drought)) {
       if((hhi_drought$ts_start[i]-hhi_drought$ts_stop[i-1]) < 0.1) {
         hhi_drought$n[i] = n
         hhi_drought$n[i-1] = n
-        if(hhi_drought$hhi.fmax[i] < hhi_drought$hhi.fmax[i-1]) {
+        #if(hhi_drought$hhi.fmax[i] < hhi_drought$hhi.fmax[i-1]) {
+        if(hhi_drought$hhi_max[i] < hhi_drought$hhi_max[i-1]) {
           hhi_drought$month_max[i-1] <- hhi_drought$month_max[i]
           hhi_drought$year_max[i-1] <- hhi_drought$year_max[i]   
           hhi_drought$ts_max[i-1] <- hhi_drought$ts_max[i]             
@@ -71,6 +72,7 @@ for(i in 2:nrow(hhi_drought)) {
         hhi_drought$ts_stop[i]  <- max(hhi_drought$ts_stop[i],hhi_drought$ts_stop[i-1])
       } else {
         n <- n+1
+        hhi_drought$n[i] = n
     }
 }
 
@@ -85,7 +87,8 @@ for(i in nrow(hhi_drought):2) {
     hhi_drought$ts_start[i-1]  <- hhi_drought$ts_start[i]
     hhi_drought$ts_stop[i-1]   <- hhi_drought$ts_stop[i]    
     hhi_drought$hhi_sum[i-1]   <- hhi_drought$hhi_sum[i]
-    if(hhi_drought$hhi.f[i-1] > hhi_drought$hhi.fmax[i]) {
+    #if(hhi_drought$hhi.f[i-1] > hhi_drought$hhi.fmax[i]) {
+    if(hhi_drought$hhi.hhi[i-1] > hhi_drought$hhi_max[i]) {
        hhi_drought$maximum[i-1] <- FALSE
     }
   }
@@ -134,8 +137,9 @@ ggplot(data=hhi_periods, aes(y=-hhi_avg, x=year_max, size=duration, color=-hhi.f
 
 droughtColors = brewer.pal(n = 5, name = "YlOrRd")
 
-ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi.avg, label=year)) +
+ggplot(data=hhi_periods, aes(y=-hhi.fmax, x=year, size=duration, color=-hhi_avg, label=year)) +
   theme_classic(base_size=80) +
+  #theme_classic()+
   theme( legend.key.width = unit(2,"cm"), legend.key.height = unit(4,"cm")) +
   guides(fill=guide_legend(title="Droughts", reverse = TRUE)) +
   xlab("Year") + ylab("HHI max") +
@@ -173,33 +177,36 @@ droughtColors = brewer.pal(n = 5, name = "YlOrRd")
 
 mp <- ggplot(hhi_drought, aes(year_max, round(12*(ts-ts_max))))
 mp + geom_raster(aes(fill=-hhi))+
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-9,-6,-3,0,3,6,9), limits=c(-12,12))+
-  scale_x_continuous(limits=c(1520,1560)) +  
+  scale_x_continuous(limits=c(1500,2020)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
 mp <- ggplot(hhi_drought, aes(year_max, month_max+round(12*(ts-ts_max))))
 mp + geom_raster(aes(fill=-hhi))+
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24))+
-  scale_x_continuous(limits=c(1580,1620)) +  
+  scale_x_continuous(limits=c(1500,2020)) +  
   scale_fill_gradientn(colors=droughtColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
 mp <- ggplot(hhi_drought, aes(year, month))
 mp + geom_raster(aes(fill=-hhi))+
-  #theme_classic(base_size=80) +
-  theme_classic() +
+  theme_classic(base_size=80) +
+  #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(3,6,9,12), limits=c(1,12))+
-  scale_x_continuous(limits=c(1520,1560)) +  
+  scale_x_continuous(limits=c(1500,2020)) +  
   scale_fill_gradientn(colors=droughtColors) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
+
+hist(round(hhi_periods$hhi_max), breaks=c(-5,-4,-3,-2,-1))
+?hist
