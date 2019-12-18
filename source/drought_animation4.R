@@ -28,6 +28,8 @@ hhi_all <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/mast
 hhi_all <- hhi_all
 
 txt_droughts <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/droughts_txt.csv", sep=",")
+txt_wetness <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/wetness_txt.csv", sep=",")
+txt_and <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/and_txt.csv", sep=",")
 txt_germany <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/germany_txt.csv", sep=",")
 txt_1500_2018 <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/1500_2018_txt.csv", sep=",")
 txt_qr <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/qr_code.csv", sep=",")
@@ -193,11 +195,17 @@ data_max <- max(nrow(hhi_drought),nrow(hhi_floods))
 for (i in (nrow(txt_droughts)+1):data_max) {
   txt_droughts <- rbind(txt_droughts, data.frame(x = 0, y = 0))
 }
+for (i in (nrow(txt_wetness)+1):data_max) {
+  txt_wetness <- rbind(txt_wetness, data.frame(x = 0, y = 0))
+}
+for (i in (nrow(txt_and)+1):data_max) {
+  txt_and <- rbind(txt_and, data.frame(x = 0, y = 1))
+}
 for (i in (nrow(txt_germany)+1):data_max) {
-  txt_germany <- rbind(txt_germany, data.frame(x = 0, y = 0))
+  txt_germany <- rbind(txt_germany, data.frame(x = 0, y = 2))
 }
 for (i in (nrow(txt_1500_2018)+1):data_max) {
-  txt_1500_2018 <- rbind(txt_1500_2018, data.frame(x = 0, y = 0))
+  txt_1500_2018 <- rbind(txt_1500_2018, data.frame(x = 0, y = 2))
 }
 for (i in (nrow(txt_qr)+1):data_max) {
   txt_qr <- rbind(txt_qr, data.frame(x = 0, y = 0))
@@ -214,12 +222,12 @@ for (i in (nrow(hhi_floods)+1):data_max) {
 }
 #5800
 ##for(yearStart4 in 5800:8080) {
-for(yearStart4 in 5400:8080) {
+for(yearStart4 in 5280:8080) {
   
     
-  #yearStart4 <- 7920
+  #yearStart4 <- 5600
    yearStart <- yearStart4/4
-   yearEnd <- yearStart+50
+   yearEnd <- yearStart+80
 
    droughtColors = brewer.pal(n = 5, name = "YlOrRd")
    floodColors = brewer.pal(n = 5, name = "GnBu")
@@ -230,11 +238,15 @@ for(yearStart4 in 5400:8080) {
      #geom_raster(aes(fill=-hhi))+
      geom_tile(aes(fill=-hhi, width=1, height=1))+
      theme_classic(base_size=80) +
+     geom_tile(aes(x=txt_droughts$x+1404, y=11-txt_droughts$y, width=1, height=1, fill=6))+
+     geom_tile(aes(x=txt_germany$x+1408, y=1-txt_germany$y, width=1, height=1, fill=4))+
+     geom_tile(aes(x=txt_1500_2018$x+1412, y=-10-txt_1500_2018$y, width=1, height=1, fill=2))+
+     geom_tile(aes(x=txt_qr$x+1460, y=11-txt_qr$y, width=1, height=1, fill=-1))+     
      #theme_classic() +
      labs(x="Year", y="Month", title="", subtitle="") +
      scale_y_continuous(breaks=c(-15,-12,-9,-6,-3,0,3,6,9), limits=c(-18,12))+
      scale_x_continuous(limits=c(yearStart,yearEnd)) +  
-     scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+     scale_fill_gradientn(colors=droughtColors, limits=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
      theme( legend.key.width = unit(2,"cm")) +
      guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
@@ -246,12 +258,16 @@ mp <- ggplot(hhi_drought, aes(year.max, month.max+round(12*(ts-ts.max))))
 mp + 
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=-hhi, width=1, height=1))+
+  geom_tile(aes(x=txt_droughts$x+1404, y=22-txt_droughts$y, width=1, height=1, fill=6))+
+  geom_tile(aes(x=txt_germany$x+1408, y=10-txt_germany$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_1500_2018$x+1412, y=-3-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
 #  #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
-  scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24))+
+  scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24), labels=c('mar','jun','sep','dec'))+
   scale_x_continuous(limits=c(yearStart,yearEnd)) +  
-  scale_fill_gradientn(colors=droughtColors) + 
+  scale_fill_gradientn(colors=droughtColors, breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4'), limit=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
@@ -265,10 +281,14 @@ mp +
    geom_tile(aes(fill=-hhi, width=1, height=1))+
   theme_classic(base_size=80) +
 #  #theme_classic() +
+  geom_tile(aes(x=txt_droughts$x+1404, y=11-0.3*txt_droughts$y, width=1, height=0.3, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1408, y=8-0.3*txt_germany$y, width=1, height=0.3, fill=3))+
+  geom_tile(aes(x=txt_1500_2018$x+1412, y=4.5-0.3*txt_1500_2018$y, width=1, height=0.3, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1460, y=11-0.3*txt_qr$y, width=1, height=0.3, fill=99))+
   labs(x="Year", y="Month", title="", subtitle="") +
-  scale_y_continuous(breaks=c(3,6,9,12), limits=c(1,12))+
+  scale_y_continuous(breaks=c(3,6,9,12), limits=c(1,12), labels=c('mar','jun','sep','dec'))+
   scale_x_continuous(limits=c(yearStart,yearEnd)) +  
-  scale_fill_gradientn(colors=droughtColors) + 
+  scale_fill_gradientn(colors=droughtColors, limit=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
@@ -279,9 +299,9 @@ mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(6*(ts.start+ts
 mp +
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=-hhi, width=1, height=1))+
-  geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
-  geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
-  geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_droughts$x+1404, y=16-txt_droughts$y, width=1, height=1, fill=6))+
+  geom_tile(aes(x=txt_germany$x+1408, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_1500_2018$x+1412, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
   geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
@@ -289,7 +309,7 @@ mp +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
   scale_x_continuous(limits=c(yearStart,yearEnd)) + 
-  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
@@ -300,17 +320,17 @@ mp <- ggplot(hhi_drought, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1
 mp +
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=-hhi, width=1, height=1))+
-  geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
-  geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
-  geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
-  geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  geom_tile(aes(x=txt_droughts$x+1414, y=34-txt_droughts$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1413, y=23-txt_germany$y, width=1, height=1, fill=3))+
+  geom_tile(aes(x=txt_1500_2018$x+1411, y=11-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1460, y=33-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
-  scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
+  scale_y_continuous(breaks=c(0,6,12,18,24,30,36), limits=c(-1,37))+
   scale_x_continuous(limits=c(yearStart,yearEnd)) + 
-  scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
+  scale_fill_gradientn(colors=droughtColors, limits=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
@@ -323,8 +343,8 @@ mp <- ggplot(hhi_floods, aes(year.max, round(12*(ts+1/24))-round(6*(ts.start+ts.
 mp +
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=hhi, width=1, height=1))+
-  ##geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
-  geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_wetness$x+1404, y=16-txt_wetness$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=3))+
   geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
   geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
@@ -344,15 +364,15 @@ mp <- ggplot(hhi_floods, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/
 mp +
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=hhi, width=1, height=1))+
-  #geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
-  geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
-  geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
-  geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  geom_tile(aes(x=txt_wetness$x+1404, y=35-txt_wetness$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1403, y=24-txt_germany$y, width=1, height=1, fill=3))+
+  geom_tile(aes(x=txt_1500_2018$x+1401, y=12-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1460, y=33-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
-  scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
+  scale_y_continuous(breaks=c(0,6,12,18,24,30,36), limits=c(-1,37))+
   scale_x_continuous(limits=c(yearStart,yearEnd)) + 
   scale_fill_gradientn(colors=floodColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
@@ -368,17 +388,19 @@ mp +
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=hhi_floods$hhi, width=1, height=1, x=hhi_floods$year.max, y=42-round(12*(hhi_floods$ts+1/24))+round(12*(hhi_floods$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_drought$hhi, width=1, height=1, x=hhi_drought$year.max, y=round(12*(hhi_drought$ts+1/24))-round(12*(hhi_drought$ts.start+1/24))))+
-  #geom_tile(aes(x=txt_droughts$x+1402, y=16-txt_droughts$y, width=1, height=1, fill=6))+
-  geom_tile(aes(x=txt_germany$x+1403, y=5-txt_germany$y, width=1, height=1, fill=4))+
-  geom_tile(aes(x=txt_1500_2018$x+1401, y=-7-txt_1500_2018$y, width=1, height=1, fill=2))+
-  geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
+  geom_tile(aes(x=txt_wetness$x+1414, y=31-txt_wetness$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_and$x+1406, y=31-txt_and$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_droughts$x+1409, y=42-txt_droughts$y, width=1, height=1, fill=-4))+
+  geom_tile(aes(x=txt_germany$x+1409, y=19-txt_germany$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_1500_2018$x+1407, y=8-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1465, y=35-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Duration [months]", title="", subtitle="") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
-  scale_y_continuous(breaks=c(-6,0,6,12,18,24,30,36,42), limits=c(-3,40))+
+  scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42), limits=c(-1,43), labels=c('D:0','D:6','D:12','D:18','W:18','W:12','W:6','W:0'))+
   scale_x_continuous(limits=c(yearStart,yearEnd)) + 
-  scale_fill_gradientn(colors=fdColors, limits=c(-4,4)) + 
+  scale_fill_gradientn(colors=fdColors, limits=c(-4,4), breaks=c(-4,-3,-2,-1,0,1,2,3,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
@@ -403,7 +425,7 @@ mp +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(1500,2020)) +  
+  scale_x_continuous(limits=c(1500,1580)) +  
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
