@@ -243,9 +243,9 @@ for(yearStart4 in 5280:8080) {
      geom_tile(aes(x=txt_1500_2018$x+1412, y=-10-txt_1500_2018$y, width=1, height=1, fill=2))+
      geom_tile(aes(x=txt_qr$x+1460, y=11-txt_qr$y, width=1, height=1, fill=-1))+     
      #theme_classic() +
-     labs(x="Year", y="Month", title="", subtitle="") +
+     labs(x="Year", y="Month") +
      scale_y_continuous(breaks=c(-15,-12,-9,-6,-3,0,3,6,9), limits=c(-18,12))+
-     scale_x_continuous(limits=c(yearStart,yearEnd)) +  
+     scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) +  
      scale_fill_gradientn(colors=droughtColors, limits=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
      theme( legend.key.width = unit(2,"cm")) +
      guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -264,9 +264,9 @@ mp +
   geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
 #  #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Month") +
   scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24), labels=c('mar','jun','sep','dec'))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) +  
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) +  
   scale_fill_gradientn(colors=droughtColors, breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4'), limit=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -285,9 +285,9 @@ mp +
   geom_tile(aes(x=txt_germany$x+1408, y=8-0.3*txt_germany$y, width=1, height=0.3, fill=3))+
   geom_tile(aes(x=txt_1500_2018$x+1412, y=4.5-0.3*txt_1500_2018$y, width=1, height=0.3, fill=2))+
   geom_tile(aes(x=txt_qr$x+1460, y=11-0.3*txt_qr$y, width=1, height=0.3, fill=99))+
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Month") +
   scale_y_continuous(breaks=c(3,6,9,12), limits=c(1,12), labels=c('mar','jun','sep','dec'))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) +  
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) +  
   scale_fill_gradientn(colors=droughtColors, limit=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -305,10 +305,10 @@ mp +
   geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -326,17 +326,17 @@ mp +
   geom_tile(aes(x=txt_qr$x+1460, y=33-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36), limits=c(-1,37))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradientn(colors=droughtColors, limits=c(0,4), breaks=c(0,1,2,3,4), labels=c('0','-1','-2','-3','-4')) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
 fileName5 <- paste('drought_begin_', toString(yearStart4), '.png', sep='')
-ggsave(fileName5, width = 40, height = 25, limitsize=FALSE, device='png', dpi=96)
-
+#ggsave(fileName5, width = 40, height = 25, limitsize=FALSE, device='png', dpi=96)
+ggsave(fileName5, width = 32, height = 18, limitsize=FALSE, device='png', dpi=96)
 
 
 mp <- ggplot(hhi_floods, aes(year.max, round(12*(ts+1/24))-round(6*(ts.start+ts.stop+1/12))))
@@ -349,10 +349,10 @@ mp +
   geom_tile(aes(x=txt_qr$x+1460, y=15-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(-18,-12,-6,0,6,12,18), limits=c(-20,20))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradientn(colors=floodColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -370,10 +370,10 @@ mp +
   geom_tile(aes(x=txt_qr$x+1460, y=33-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Month", title="", subtitle="") +
+  labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36), limits=c(-1,37))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradientn(colors=floodColors, limits=c(0,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
@@ -396,16 +396,17 @@ mp +
   geom_tile(aes(x=txt_qr$x+1465, y=35-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
-  labs(x="Year", y="Duration [months]", title="", subtitle="") +
+  labs(x="Year", y="Duration [months]") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42), limits=c(-1,43), labels=c('D:0','D:6','D:12','D:18','W:18','W:12','W:6','W:0'))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradientn(colors=fdColors, limits=c(-4,4), breaks=c(-4,-3,-2,-1,0,1,2,3,4)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="HHI", reverse = TRUE))
 
 fileName8 <- paste('both_begin_', toString(yearStart4), '.png', sep='')
-ggsave(fileName8, width = 40, height = 25, limitsize=FALSE, device='png', dpi=96)
+#ggsave(fileName8, width = 40, height = 25, limitsize=FALSE, device='png', dpi=96)
+ggsave(fileName8, width = 32, height = 18, limitsize=FALSE, device='png', dpi=96)
 }
 
 
@@ -512,3 +513,5 @@ mp +
 
 fileName6 <- paste('flood_centered_all.png', sep='')
 ggsave(fileName6, width = 40, height = 25, limitsize=FALSE, device='png', dpi=96)
+
+
