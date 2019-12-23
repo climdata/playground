@@ -523,18 +523,18 @@ mp +
   geom_tile(aes(fill=hhi_floods$ti, width=1, height=1, x=hhi_floods$year.max, y=48-round(12*(hhi_floods$ts+1/24))+round(12*(hhi_floods$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_drought$ti, width=1, height=1, x=hhi_drought$year.max, y=round(12*(hhi_drought$ts+1/24))-round(12*(hhi_drought$ts.start+1/24))))+
   #geom_tile(aes(fill=hhi_normal$ti, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
-  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
-  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
-  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
-  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
+  geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42,48), labels=c('D:0','D:6','D:12','D:18','','W:18','W:12','W:6','W:0'),limits=c(-3,51))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradientn(colors=tempColors, limits=c(-3,3), breaks=c(-3,-2,-1,0,1,2,3)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="TI", reverse = TRUE))
@@ -560,13 +560,13 @@ mp +
   labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42,48), labels=c('D:0','D:6','D:12','D:18','','W:18','W:12','W:6','W:0'),limits=c(-3,51))+
-  scale_x_continuous(limits=c(yearStart,yearEnd)) + 
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
   scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30",
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="PI", reverse = TRUE))
 
-fileName8 <- paste('both_begin_pi_', toString(yearStart4), '.png', sep='')
+fileName10 <- paste('both_begin_pi_', toString(yearStart4), '.png', sep='')
 ggsave(fileName10, width = 32, height = 18, limitsize=FALSE, device='png', dpi=96)
 
 
@@ -708,7 +708,7 @@ mp +
   labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42,48), labels=c('D:0','D:6','D:12','N:6','N:0','N:-6','W:12','W:6','W:0'),limits=c(-3,51))+
-  scale_x_continuous(limits=c(1400,1500)) + 
+  scale_x_continuous(limits=c(1500,2020)) + 
   scale_fill_gradientn(colors=tempColors, limits=c(-3,3), breaks=c(-3,-2,-1,0,1,2,3)) + 
   theme( legend.key.width = unit(2,"cm")) +
   guides(fill=guide_legend(title="TI", reverse = TRUE))
@@ -734,7 +734,7 @@ mp +
   labs(x="Year", y="Month") +
   #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
   scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42,48), labels=c('D:0','D:6','D:12','N:6','N:0','N:-6','W:12','W:6','W:0'),limits=c(-3,51))+
-  scale_x_continuous(limits=c(1400,1500)) + 
+  scale_x_continuous(limits=c(1500,2020)) + 
   scale_fill_gradient2(low="#AA6010", mid="#FCF0C2", high="#23AB30",
                        limits=c(-3,3)) +
   theme( legend.key.width = unit(2,"cm")) +

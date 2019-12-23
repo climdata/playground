@@ -431,6 +431,99 @@ tempColors = rev(brewer.pal(n = 7, name = "RdBu"))
 heatColors = brewer.pal(n = 5, name = "YlOrRd")
 coldColors = brewer.pal(n = 5, name = "GnBu")
 hcColors <-  c(rev(floodColors), "grey", droughtColors)   
+#precColors = 
+tempColors = rev(brewer.pal(n = 7, name = "RdBu"))
+droughtColors = brewer.pal(n = 5, name = "YlOrRd")
+floodColors = brewer.pal(n = 5, name = "GnBu")
+fdColors <-  c(rev(droughtColors), "grey", floodColors) 
+
+#5800
+##for(yearStart4 in 5800:8080) {
+for(yearStart4 in 5200:8080) {
+  
+  
+  #yearStart4 <- 7920
+  yearStart <- yearStart4/4
+  yearEnd <- yearStart+100
+  
+
+
+
+mp <- ggplot(hhi_floods, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/24))))
+mp +
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=hhi_floods$hhi, width=1, height=1, x=hhi_floods$year.max, y=round(12*(hhi_floods$ts+1/24))-round(12*(hhi_floods$ts.start+1/24))))+
+  geom_tile(aes(fill=hhi_drought$hhi, width=1, height=1, x=hhi_drought$year.max, y=48-round(12*(hhi_drought$ts+1/24))+round(12*(hhi_drought$ts.start+1/24))))+
+  geom_tile(aes(fill=hhi_normal$hhi, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
+  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
+  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
+  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
+  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Month", title="", subtitle="") +
+  #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
+  scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42,48), labels=c('H:0','H:6','H:12','N:6','N:0','N:-6','C:12','C:6','C:0'),limits=c(-3,51))+
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
+  scale_fill_gradientn(colors=hcColors, limits=c(-4,4), breaks=c(-4,-3,-2,-1,0,1,2,3,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HTI", reverse = TRUE))
+
+fileName8 <- paste('temp_begin_', toString(yearStart4), '.png', sep='')
+ggsave(fileName8, width = 32, height = 18, limitsize=FALSE, device='png', dpi=96)
+
+mp <- ggplot(hhi_floods, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/24))))
+mp +
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=hhi_floods$ti, width=1, height=1, x=hhi_floods$year.max, y=round(12*(hhi_floods$ts+1/24))-round(12*(hhi_floods$ts.start+1/24))))+
+  geom_tile(aes(fill=hhi_drought$ti, width=1, height=1, x=hhi_drought$year.max, y=48-round(12*(hhi_drought$ts+1/24))+round(12*(hhi_drought$ts.start+1/24))))+
+  ##geom_tile(aes(fill=hhi_normal$ti, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
+  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
+  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
+  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
+  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  theme_classic(base_size=80) +
+  #theme_classic() +
+  labs(x="Year", y="Months", title="", subtitle="") +
+  #labs(x="Year", y="Month", title="", subtitle="10.5194/cp-2019-104, tambora.org") +
+  scale_y_continuous(breaks=c(0,6,12,18,24,30,36,42,48), labels=c('H:0','H:6','H:12','H:18','','C:18','C:12','C:6','C:0'),limits=c(-3,51))+
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
+  scale_fill_gradientn(colors=tempColors, limits=c(-3,3), breaks=c(-3,-2,-1,0,1,2,3)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="TI", reverse = TRUE))
+
+
+fileName9 <- paste('temp_begin_ti_', toString(yearStart4), '.png', sep='')
+ggsave(fileName9, width = 32, height = 18, limitsize=FALSE, device='png', dpi=96)
+
+##??
+mp <- ggplot(hhi_floods, aes(year.max, month.max+round(12*(ts-ts.max))))
+mp + 
+  #geom_raster(aes(fill=-hhi))+
+  geom_tile(aes(fill=hhi, width=1, height=1))+
+  #geom_tile(aes(x=txt_droughts$x+1404, y=22-txt_droughts$y, width=1, height=1, fill=6))+
+  #geom_tile(aes(x=txt_germany$x+1408, y=10-txt_germany$y, width=1, height=1, fill=4))+
+  #geom_tile(aes(x=txt_1500_2018$x+1412, y=-3-txt_1500_2018$y, width=1, height=1, fill=2))+
+  #geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
+  theme_classic(base_size=80) +
+  #  #theme_classic() +
+  labs(x="Year", y="Month") +
+  scale_y_continuous(breaks=c(3,6,9,12), limits=c(-12,24), labels=c('mar','jun','sep','dec'))+
+  scale_x_continuous(limits=c(yearStart,yearEnd), breaks = seq(from = 1300, to = 2220, by = 20)) + 
+  scale_fill_gradientn(colors=droughtColors, breaks=c(0,1,2,3,4), labels=c('0','1','2','3','4'), limit=c(0,4)) + 
+  theme( legend.key.width = unit(2,"cm")) +
+  guides(fill=guide_legend(title="HHI", reverse = TRUE))
+
+
+fileName10 <- paste('heat_season_', toString(yearStart4), '.png', sep='')
+ggsave(fileName10, width = 32, height = 18, limitsize=FALSE, device='png', dpi=96)
+
+}
+
 
 mp <- ggplot(hhi_floods, aes(year.max, round(12*(ts+1/24))-round(12*(ts.start+1/24))))
 mp +
