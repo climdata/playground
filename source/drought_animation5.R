@@ -470,10 +470,10 @@ for(yearStart4 in 5200:8080) {
    mp +
      #geom_raster(aes(fill=-hhi))+
      geom_tile(aes(fill=pi, width=1, height=1))+
-     geom_tile(aes(x=txt_droughts$x+1414, y=34-txt_droughts$y, width=1, height=1, fill=4))+
-     geom_tile(aes(x=txt_germany$x+1413, y=23-txt_germany$y, width=1, height=1, fill=3))+
-     geom_tile(aes(x=txt_1500_2018$x+1411, y=11-txt_1500_2018$y, width=1, height=1, fill=2))+
-     geom_tile(aes(x=txt_qr$x+1460, y=33-txt_qr$y, width=1, height=1, fill=-1))+
+     geom_tile(aes(x=txt_droughts$x+1414, y=34-txt_droughts$y, width=1, height=1, fill=-3))+
+     geom_tile(aes(x=txt_germany$x+1413, y=23-txt_germany$y, width=1, height=1, fill=0))+
+     geom_tile(aes(x=txt_1500_2018$x+1411, y=11-txt_1500_2018$y, width=1, height=1, fill=3))+
+     geom_tile(aes(x=txt_qr$x+1460, y=33-txt_qr$y, width=1, height=1, fill=99))+
      theme_classic(base_size=80) +
      #theme_classic() +
      labs(x="Year", y="Month") +

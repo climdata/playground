@@ -393,24 +393,34 @@ hhi_normal <- merge(hhi_normal,ti_all, by=c("year","month"))
 
 data_max <- max(nrow(hhi_drought),nrow(hhi_floods),nrow(hhi_normal))
 
-#for (i in (nrow(txt_droughts)+1):data_max) {
-#  txt_droughts <- rbind(txt_droughts, data.frame(x = 0, y = 0))
-#}
-#for (i in (nrow(txt_wetness)+1):data_max) {
-#  txt_wetness <- rbind(txt_wetness, data.frame(x = 0, y = 0))
-#}
-#for (i in (nrow(txt_and)+1):data_max) {
-#  txt_and <- rbind(txt_and, data.frame(x = 0, y = 1))
-#}
-#for (i in (nrow(txt_germany)+1):data_max) {
-#  txt_germany <- rbind(txt_germany, data.frame(x = 0, y = 2))
-#}
-#for (i in (nrow(txt_1500_2018)+1):data_max) {
-#  txt_1500_2018 <- rbind(txt_1500_2018, data.frame(x = 0, y = 2))
-#}
-#for (i in (nrow(txt_qr)+1):data_max) {
-#  txt_qr <- rbind(txt_qr, data.frame(x = 0, y = 0))
-#}
+
+txt_cold <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/cold_txt.csv", sep=",")
+txt_heat <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/heat_txt.csv", sep=",")
+txt_and <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/and_txt.csv", sep=",")
+txt_germany <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/germany_txt.csv", sep=",")
+txt_1500_2018 <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/1500_2018_txt.csv", sep=",")
+txt_qr <- read.csv("https://raw.githubusercontent.com/climdata/drought2019/master/data/qr_code.csv", sep=",")
+
+
+for (i in (nrow(txt_cold)+1):data_max) {
+  txt_cold <- rbind(txt_cold, data.frame(x = 0, y = 2))
+}
+for (i in (nrow(txt_heat)+1):data_max) {
+  txt_heat <- rbind(txt_heat, data.frame(x = 0, y = 0))
+}
+for (i in (nrow(txt_and)+1):data_max) {
+  txt_and <- rbind(txt_and, data.frame(x = 0, y = 1))
+}
+for (i in (nrow(txt_germany)+1):data_max) {
+  txt_germany <- rbind(txt_germany, data.frame(x = 0, y = 2))
+}
+for (i in (nrow(txt_1500_2018)+1):data_max) {
+  txt_1500_2018 <- rbind(txt_1500_2018, data.frame(x = 0, y = 2))
+}
+for (i in (nrow(txt_qr)+1):data_max) {
+ txt_qr <- rbind(txt_qr, data.frame(x = 0, y = 0))
+}
+
 if(nrow(hhi_drought) < data_max) {
   for (i in (nrow(hhi_drought)+1):data_max) {
     hhi_drought <- rbind(hhi_drought, data.frame(year=0,month=0,time='1000-0-0', ts=0.0, hdi=0.0, hwi=0.0, hhi=0.0, hdwi=0.0, hhi.f=0.0, n=0, hhi.fmax=0.0, hhi.max=0.0, hhi.sum=0.0, hhi.avg=0.0, month.max=0, year.max=0, ts.max=0.0, ts.start=0.0, ts.stop=0.0, duration=0, maximum=FALSE, ti=0))
@@ -442,7 +452,7 @@ fdColors <-  c(rev(droughtColors), "grey", floodColors)
 for(yearStart4 in 5200:8080) {
   
   
-  #yearStart4 <- 7920
+  #yearStart4 <- 5600
   yearStart <- yearStart4/4
   yearEnd <- yearStart+100
   
@@ -455,12 +465,12 @@ mp +
   geom_tile(aes(fill=hhi_floods$hhi, width=1, height=1, x=hhi_floods$year.max, y=round(12*(hhi_floods$ts+1/24))-round(12*(hhi_floods$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_drought$hhi, width=1, height=1, x=hhi_drought$year.max, y=48-round(12*(hhi_drought$ts+1/24))+round(12*(hhi_drought$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_normal$hhi, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
-  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
-  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
-  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
-  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_cold$x+1403, y=49-txt_cold$y, width=1, height=1, fill=-4))+
+  geom_tile(aes(x=txt_and$x+1408, y=28-txt_and$y, width=1, height=1, fill=0))+
+  geom_tile(aes(x=txt_heat$x+1403, y=8-txt_heat$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  geom_tile(aes(x=txt_qr$x+1425, y=39-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
@@ -480,12 +490,12 @@ mp +
   geom_tile(aes(fill=hhi_floods$ti, width=1, height=1, x=hhi_floods$year.max, y=round(12*(hhi_floods$ts+1/24))-round(12*(hhi_floods$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_drought$ti, width=1, height=1, x=hhi_drought$year.max, y=48-round(12*(hhi_drought$ts+1/24))+round(12*(hhi_drought$ts.start+1/24))))+
   ##geom_tile(aes(fill=hhi_normal$ti, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
-  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
-  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
-  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
-  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_cold$x+1402, y=49-txt_cold$y, width=1, height=1, fill=-3))+
+  geom_tile(aes(x=txt_and$x+1407, y=28-txt_and$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_heat$x+1402, y=8-txt_heat$y, width=1, height=1, fill=3))+
+  geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  geom_tile(aes(x=txt_qr$x+1425, y=39-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Months", title="", subtitle="") +
@@ -505,10 +515,10 @@ mp <- ggplot(hhi_floods, aes(year.max, month.max+round(12*(ts-ts.max))))
 mp + 
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=hhi, width=1, height=1))+
-  #geom_tile(aes(x=txt_droughts$x+1404, y=22-txt_droughts$y, width=1, height=1, fill=6))+
-  #geom_tile(aes(x=txt_germany$x+1408, y=10-txt_germany$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_1500_2018$x+1412, y=-3-txt_1500_2018$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
+  geom_tile(aes(x=txt_heat$x+1404, y=22-txt_heat$y, width=1, height=1, fill=6))+
+  geom_tile(aes(x=txt_germany$x+1408, y=10-txt_germany$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_1500_2018$x+1412, y=-3-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #  #theme_classic() +
   labs(x="Year", y="Month") +
@@ -531,12 +541,12 @@ mp +
   geom_tile(aes(fill=hhi_floods$hhi, width=1, height=1, x=hhi_floods$year.max, y=round(12*(hhi_floods$ts+1/24))-round(12*(hhi_floods$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_drought$hhi, width=1, height=1, x=hhi_drought$year.max, y=48-round(12*(hhi_drought$ts+1/24))+round(12*(hhi_drought$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_normal$hhi, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
-  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
-  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
-  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
-  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_cold$x+1406, y=49-txt_cold$y, width=1, height=1, fill=-4))+
+  geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
+  geom_tile(aes(x=txt_heat$x+1406, y=8-txt_heat$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Month", title="", subtitle="") +
@@ -556,12 +566,12 @@ mp +
   geom_tile(aes(fill=hhi_floods$ti, width=1, height=1, x=hhi_floods$year.max, y=round(12*(hhi_floods$ts+1/24))-round(12*(hhi_floods$ts.start+1/24))))+
   geom_tile(aes(fill=hhi_drought$ti, width=1, height=1, x=hhi_drought$year.max, y=48-round(12*(hhi_drought$ts+1/24))+round(12*(hhi_drought$ts.start+1/24))))+
   ##geom_tile(aes(fill=hhi_normal$ti, width=1, height=1, x=hhi_normal$year.max, y=24+round(12*(hhi_normal$ts+1/24))-round(6*(hhi_normal$ts.start+hhi_normal$ts.stop+1/12))))+
-  #geom_tile(aes(x=txt_wetness$x+1406, y=49-txt_wetness$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
-  #geom_tile(aes(x=txt_droughts$x+1406, y=8-txt_droughts$y, width=1, height=1, fill=-4))+
-  #geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
-  #geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
+  geom_tile(aes(x=txt_cold$x+1406, y=49-txt_cold$y, width=1, height=1, fill=-4))+
+  geom_tile(aes(x=txt_and$x+1411, y=28-txt_and$y, width=1, height=1, fill=0))+
+  geom_tile(aes(x=txt_heat$x+1406, y=8-txt_heat$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_germany$x+1455, y=49-txt_germany$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_1500_2018$x+1453, y=8-txt_1500_2018$y, width=1, height=1, fill=-2))+
+  geom_tile(aes(x=txt_qr$x+1435, y=39-txt_qr$y, width=1, height=1, fill=99))+
   theme_classic(base_size=80) +
   #theme_classic() +
   labs(x="Year", y="Months", title="", subtitle="") +
@@ -580,10 +590,10 @@ mp <- ggplot(hhi_floods, aes(year.max, month.max+round(12*(ts-ts.max))))
 mp + 
   #geom_raster(aes(fill=-hhi))+
   geom_tile(aes(fill=hhi, width=1, height=1))+
-  #geom_tile(aes(x=txt_droughts$x+1404, y=22-txt_droughts$y, width=1, height=1, fill=6))+
-  #geom_tile(aes(x=txt_germany$x+1408, y=10-txt_germany$y, width=1, height=1, fill=4))+
-  #geom_tile(aes(x=txt_1500_2018$x+1412, y=-3-txt_1500_2018$y, width=1, height=1, fill=2))+
-  #geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
+  geom_tile(aes(x=txt_heat$x+1404, y=22-txt_heat$y, width=1, height=1, fill=6))+
+  geom_tile(aes(x=txt_germany$x+1408, y=10-txt_germany$y, width=1, height=1, fill=4))+
+  geom_tile(aes(x=txt_1500_2018$x+1412, y=-3-txt_1500_2018$y, width=1, height=1, fill=2))+
+  geom_tile(aes(x=txt_qr$x+1460, y=21-txt_qr$y, width=1, height=1, fill=-1))+
   theme_classic(base_size=80) +
   #  #theme_classic() +
   labs(x="Year", y="Month") +
