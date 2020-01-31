@@ -20,8 +20,14 @@ https://www.meteoschweiz.admin.ch/home/klima/schweizer-klima-im-detail/homogene-
 locations <- c('BAS','BER','CHM','CHD','GSB','DAV','ENG','GVE','LUG','PAY','SIA','SIO','SAE','SMA')
 for (station in locations) {
    print(paste("Reading station:", station))
+   fileSt <- paste("csv/monthly_tp_", station, ".csv", sep="")
    url <- paste("https://www.meteoschweiz.admin.ch/product/output/climate-data/homogenous-monthly-data-processing/data/homog_mo_", station, ".txt", sep="")
   homoData <- read.csv(url, sep="", na = "NA", skip = 27)
+  
+ write.table(homoData, file = fileSt, append = FALSE, quote = TRUE, sep = ",",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = TRUE, qmethod = "escape", fileEncoding = "UTF-8")  
+  
 }
 
 
