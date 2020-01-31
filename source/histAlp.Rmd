@@ -1,0 +1,54 @@
+---
+title: "histAlp"
+author: "Michael Kahle"
+date: "31 1 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+http://www.zamg.ac.at/histalp/dataset/station/csv.php
+
+
+Auer I, Böhm R, Jurkovic A, Lipa W, Orlik A, Potzmann R, Schöner W, Ungersböck M, Matulla C, Briffa K, Jones PD, Efthymiadis D, Brunetti M, Nanni T, Maugeri M, Mercalli L, Mestre O, Moisselin J-M, Begert M, Müller-Westermeier G, Kveton V, Bochnicek O, Stastny P, Lapin M, Szalai S, Szentimrey T, Cegnar T, Dolinar M, Gajic-Capka M, Zaninovic K, Majstorovic Z, Nieplova E, 2007. HISTALP – Historical instrumental climatological surface time series of the greater Alpine region 1760-2003. International Journal of Climatology 27: 17-46 
+
+
+```{sh downloads}
+
+for station in "GRA" "INN" "WRN"
+do
+  for parameter in "T01" "R01"
+  do
+     file="histalp_${station}_${parameter}.csv"
+     data="station=_1&statabbr=${station}&parameter=${parameter}&exportCSV=export+Data+as+CSV&season=year"
+     echo "Download file: $file"
+     echo $mkmkmk
+     [ -f ./download/$file ] && mv -f ./download/$file ./download/$file.bck
+     curl "http://www.zamg.ac.at/histalp/dataset/station/csv.php"  --data "$data" > ./download/$file
+     ## Remove first 4 lines !!
+     tail -n +5 ./download/$file > ./download/$file.tmp && mv ./download/$file.tmp   ./download/$file
+     ## Remove complete empty lines
+     grep -v "999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999;999999" ./download/$file > ./download/$file.tmp && mv ./download/$file.tmp   ./download/$file
+  done
+done
+```
+
+
+```{r read}
+
+for (station in c("GRA","INN","WRN")){
+  print(paste("Reading station:", station))
+  fileT <- paste("./download/histalp_", station, "_T01.csv", sep="")
+  temp <- read.csv(fileT, sep=";", na = "999999", comment.char="#")
+  fileP <- paste("./download/histalp_", station, "_R01.csv", sep="")
+  prec <- read.csv(fileP, sep=";", na = "999999", comment.char="#")
+}
+
+# T in 0.1 degree, convert to monthly series...
+
+```
+

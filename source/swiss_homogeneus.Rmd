@@ -1,0 +1,34 @@
+---
+title: "Swiss"
+author: "Michael Kahle"
+date: "31 1 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Swiss Homogeneus Rows
+
+
+
+https://www.meteoschweiz.admin.ch/home/klima/schweizer-klima-im-detail/homogene-messreihen-ab-1864.html?region=Tabelle
+
+```{r cars}
+
+locations <- c('BAS','BER','CHM','CHD','GSB','DAV','ENG','GVE','LUG','PAY','SIA','SIO','SAE','SMA')
+for (station in locations) {
+   print(paste("Reading station:", station))
+   url <- paste("https://www.meteoschweiz.admin.ch/product/output/climate-data/homogenous-monthly-data-processing/data/homog_mo_", station, ".txt", sep="")
+  homoData <- read.csv(url, sep="", na = "NA", skip = 27)
+}
+
+
+
+
+
+
+
+```
+
